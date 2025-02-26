@@ -5,4 +5,4 @@ const PizzaSchema = new mongoose.Schema({
     toppings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Topping'}]
 });
 
-module.export = mongoose.model('Pizza', PizzaSchema);
+module.exports = mongoose.model('Pizza', PizzaSchema);
