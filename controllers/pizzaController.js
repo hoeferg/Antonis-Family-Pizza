@@ -55,7 +55,7 @@ exports.deletePizza = async (req, res) => {
 
 //Update pizza
 exports.updatePizza = async (req, res) => {
-  const { name, toppings } = req.body;
+  let { name, toppings } = req.body;
   name = name.trim()
   if (!name) {
     return res.status(400).json({ message: "Pizza name cannot be empty" });
