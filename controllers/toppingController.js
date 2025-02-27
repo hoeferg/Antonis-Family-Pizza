@@ -31,12 +31,10 @@ exports.deleteTopping = async (req, res) => {
     try {
         const deletedTopping = await Topping.findByIdAndDelete(req.params.id);
         if (!deletedTopping) {
-            return res.status(404).json({ message: 'Toppng not found'})
-        } else {
-            res.json({ message: 'Topping deleted'});
-        }
+            return res.status(404).json({ message: 'Topping not found'})
+        } res.json({ message: 'Topping deleted'});
     } catch (error) {
-        res.status(500).json({ message: "unable to delete topping"});
+        res.status(500).json({ message: error.message});
     }
 };
 
