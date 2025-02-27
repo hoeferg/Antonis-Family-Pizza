@@ -19,7 +19,7 @@ mongoose
   .catch((error) => console.error("MongoDB Connection Error:", error));
 
 // Routes
-app.use("/api/toppings", require("./routes/toppingRouts"));
+app.use("/api/toppings", require("./routes/toppingRoutes"));
 app.use("/api/pizzas", require("./routes/pizzaRoutes"));
 
 app.get("/", (req, res) => {
