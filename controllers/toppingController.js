@@ -14,7 +14,7 @@ exports.getToppings = async (req, res) => {
 exports.addTopping = async (req, res) => {
   const { name } = req.body;
   const trimmedName = name.trim();
-  
+
   try {
     const existingTopping = await Topping.findOne({ name: trimmedName });
     if (existingTopping)
@@ -22,7 +22,7 @@ exports.addTopping = async (req, res) => {
 
     const topping = new Topping({ name: trimmedName });
     await topping.save();
-    res.status(201).json(topping);
+    res.status(201).json({ message: "Successfully created topping", topping });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -35,7 +35,7 @@ exports.deleteTopping = async (req, res) => {
     if (!deletedTopping) {
       return res.status(404).json({ message: "Topping not found" });
     }
-    res.json({ message: "Topping has been deleted" });
+    res.json({ message: "Successfully topping successfully deleted" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -56,7 +56,7 @@ exports.updateTopping = async (req, res) => {
       return res.status(404).json({ message: "Topping not found" });
     }
 
-    res.json(updatedTopping);
+    res.json({ message: "Successfully updated topping", updatedTopping });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
