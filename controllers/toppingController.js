@@ -23,7 +23,15 @@ exports.addTopping = async (req, res) => {
 
 //Delete topping
 exports.deleteTopping = async (req, res) => {
-    await Topping.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Topping deleted'});
-}
+    try {
+        const deletedTopping = await Topping.findByIdAndDelete(req.params.id);
+        if (!deletedTopping) {
+            return res.status(404).json({ message: 'Toppng not found'})
+        } else {
+            res.json({ message: 'Topping deleted'});
+        }
+    } catch (error) {
+        res.status(500).json({ message: "unable to delete topping"});
+    }
+};
 
