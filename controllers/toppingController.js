@@ -35,7 +35,7 @@ exports.deleteTopping = async (req, res) => {
     if (!deletedTopping) {
       return res.status(404).json({ message: "Topping not found" });
     }
-    res.json({ message: "Topping deleted" });
+    res.json({ message: "Topping has been deleted" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
