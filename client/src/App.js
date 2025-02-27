@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-// import Pizzas from "./pages/Pizzas";
-// import Toppings from "./pages/Toppings";
+import Pizzas from "./pages/Pizzas";
+import Toppings from "./pages/Toppings";
 
 function App() {
   return (
@@ -11,8 +11,8 @@ function App() {
         <Link to="/toppings" className="text-blue-500">Toppings</Link>
         </nav>
         <Routes>
-          {/* <Route path="/pizzas" element={<Pizzas />} />
-          <Route path="/toppings" element={<Toppings />} /> */}
+          <Route path="/pizzas" element={<Pizzas />} />
+          <Route path="/toppings" element={<Toppings />} />
         </Routes>
       </div>
     </Router>
