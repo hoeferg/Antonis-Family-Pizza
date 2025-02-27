@@ -21,3 +21,9 @@ exports.addTopping = async (req, res) => {
     }
 };
 
+//Delete topping
+exports.deleteTopping = async (req, res) => {
+    await Topping.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Topping deleted'});
+}
+
