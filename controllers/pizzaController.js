@@ -34,7 +34,7 @@ exports.addPizza = async (req, res) => {
 
     const pizza = new Pizza({ name, toppings });
     await pizza.save();
-    res.status(201).json(pizza);
+    res.status(201).json({ message: "Successfully created pizza", topping });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -47,7 +47,7 @@ exports.deletePizza = async (req, res) => {
     if (!deletedPizza) {
       return res.status(404).json({ message: "Pizza not found" });
     }
-    res.json({ message: "Pizza deleted" });
+    res.json({ message: "Successfully deleted pizza" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -70,7 +70,7 @@ exports.updatePizza = async (req, res) => {
       return res.status(404).json({ message: "Pizza not found" });
     }
 
-    res.json(updatedPizza);
+    res.json({ message: "Successfully updated pizza", updatedPizza });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
