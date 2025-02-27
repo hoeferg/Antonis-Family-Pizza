@@ -13,12 +13,14 @@ exports.getToppings = async (req, res) => {
 //Add topping
 exports.addTopping = async (req, res) => {
   const { name } = req.body;
+  const trimmedName = name.trim();
+  
   try {
-    const existingTopping = await Topping.findOne({ name });
+    const existingTopping = await Topping.findOne({ name: trimmedName });
     if (existingTopping)
       return res.status(400).json({ message: "Topping already exists" });
 
-    const topping = new Topping({ name });
+    const topping = new Topping({ name: trimmedName });
     await topping.save();
     res.status(201).json(topping);
   } catch (error) {
@@ -42,10 +44,11 @@ exports.deleteTopping = async (req, res) => {
 //Update topping
 exports.updateTopping = async (req, res) => {
   const { name } = req.body;
+  const trimmedName = name.trim();
   try {
     const updatedTopping = await Topping.findByIdAndUpdate(
       req.params.id,
-      { name },
+      { name: trimmedName },
       { new: true }
     );
 

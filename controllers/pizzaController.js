@@ -14,13 +14,17 @@ exports.getPizzas = async (req, res) => {
 //Add pizza
 exports.addPizza = async (req, res) => {
   const { name, toppings } = req.body;
+  name = name.trim();
+  if (!name) {
+    return res.status(400).json({ message: "Pizza name cannot be empty" });
+  }
   try {
     const existingPizza = await Pizza.findOne({ name });
     if (existingPizza) {
       return res.status(400).json({ message: "Pizza already exists" });
     }
     //Check if toppings exist in database
-    const validToppings = await Toppings.find({ _id: { $in: topping } });
+    const validToppings = await Topping.find({ _id: { $in: toppings } });
 
     if (validToppings.length !== toppings.length) {
       return res
@@ -52,6 +56,10 @@ exports.deletePizza = async (req, res) => {
 //Update pizza
 exports.updatePizza = async (req, res) => {
   const { name, toppings } = req.body;
+  name = name.trim()
+  if (!name) {
+    return res.status(400).json({ message: "Pizza name cannot be empty" });
+  }
   try {
     const updatedPizza = await Pizza.findByIdAndUpdate(
       req.params.id,
