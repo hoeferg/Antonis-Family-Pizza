@@ -14,9 +14,12 @@ exports.getPizzas = async (req, res) => {
 //Add pizza
 exports.addPizza = async (req, res) => {
   let { name, toppings } = req.body;
+
+  console.log("received request:", req.body);
+
   name = name.trim();
-  if (!name) {
-    return res.status(400).json({ message: "Pizza name cannot be empty" });
+  if (!name || !Array.isArray(toppings) || toppings.length === 0) {
+    return res.status(400).json({ message: "Name and at least one topping are required" });
   }
   try {
     const existingPizza = await Pizza.findOne({ name });
@@ -24,7 +27,7 @@ exports.addPizza = async (req, res) => {
       return res.status(400).json({ message: "Pizza already exists" });
     }
     //Check if toppings exist in database
-    const validToppings = await Topping.find({ _id: { $in: toppings } });
+    const validToppings = await Topping.find({ _id: { $in: toppings[0] } });
 
     if (validToppings.length !== toppings.length) {
       return res
@@ -34,8 +37,12 @@ exports.addPizza = async (req, res) => {
 
     const pizza = new Pizza({ name, toppings });
     await pizza.save();
+
+    const newPizza = await Pizza.findById(pizza._id).populate("toppings");
+
     res.status(201).json({ message: "Successfully created pizza", topping });
   } catch (error) {
+    console.error("Server Error:", error);
     res.status(500).json({ message: error.message });
   }
 };

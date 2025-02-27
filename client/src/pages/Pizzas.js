@@ -10,43 +10,75 @@ function Pizzas() {
   const [selectedToppings, setSelectedToppings] = useState([]);
 
   useEffect(() => {
-    fetch(PIZZA_API)
-      .then((res) => res.json())
-      .then((data) => setPizzas(data))
-      .catch((error) => console.error("Error fetching pizzas:", error));
-
-    fetch(TOPPING_API)
-      .then((res) => res.json())
-      .then((data) => setToppings(data))
-      .catch((error) => console.error("Error fetching toppings:", error));
+   fetchPizzas();
+   fetchToppings();
   }, []);
 
+  useEffect(() => {
+    fetchPizzas();
+  }, []);
+
+  const fetchPizzas = async () => {
+    try {
+      const response = await fetch(PIZZA_API);
+      const data = await response.json();
+      setPizzas(data);
+    } catch (error) {
+      console.error("Error fetching pizzas:", error);
+    }
+  };
+  
+  const fetchToppings = async () => {
+    try {
+        const response = await fetch(TOPPING_API);
+        const data = await response.json();
+        setToppings(data);
+    } catch (error) {
+        console.error("Error fetching toppings:", error);
+    }
+  }
+
+//Add Pizza
   const addPizza = async () => {
-    if (!name || selectedToppings.length === 0) return;
+    if (!name || selectedToppings.length === 0) {
+        console.error("Name or toppings are missing")
+        return;
+    } 
+
+    const requestData = {name, toppings:selectedToppings};
+    console.log("Sending request:", requestData);
+
     try {
       const response = await fetch(PIZZA_API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, toppings: selectedToppings }),
       });
-      if (!response.ok) throw new Error("Failed to add pizza");
+
+      const responseData = await response.json();
+      console.log("Server Response:", responseData);
+
+      if (!response.ok) throw new Error(responseData.message || "Failed to add pizza");
 
       const newPizza = await response.json();
       setPizzas((prevPizzas) => [...prevPizzas, newPizza]);
       setName("");
       setSelectedToppings([]);
+
+      await fetchPizzas()
     } catch (error) {
-      console.error(error);
+      console.error("Error adding pizza:", error.message);
     }
   };
 
+  //Delete Pizza
   const deletePizza = async (id) => {
     try {
       const response = await fetch(`${PIZZA_API}/${id}`, { method: "DELETE" });
       if (!response.ok) throw new Error("Failed to delete pizza");
 
       setPizzas((prevPizzas) => prevPizzas.filter((p) => p._id !== id));
-
+      await fetchPizzas()
     } catch (error) {
       console.error(error);
     }
