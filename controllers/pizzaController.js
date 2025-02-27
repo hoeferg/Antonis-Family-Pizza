@@ -16,8 +16,17 @@ exports.addPizza = async (req, res) => {
   const { name, toppings } = req.body;
   try {
     const existingPizza = await Pizza.findOne({ name });
-    if (existingPizza)
+    if (existingPizza) {
       return res.status(400).json({ message: "Pizza already exists" });
+    }
+    //Check if toppings exist in database
+    const validToppings = await Toppings.find({ _id: { $in: topping } });
+
+    if (validToppings.length !== toppings.length) {
+      return res
+        .status(400)
+        .json({ message: "One or more toppings are invalid" });
+    }
 
     const pizza = new Pizza({ name, toppings });
     await pizza.save();
