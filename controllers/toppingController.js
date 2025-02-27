@@ -38,3 +38,22 @@ exports.deleteTopping = async (req, res) => {
     }
 };
 
+//Update topping
+exports.updateTopping = async (req, res) => {
+    const { name } =req.body;
+    try {
+        const updatedTopping = await Topping.findByIdAndUpdate( 
+            req.params.id,
+            { name },
+            { new: true }
+        );
+
+        if (!updatedTopping) {
+            return res.status(404).json({ message: 'Topping not found'});
+        }
+
+        res.json(updatedTopping);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

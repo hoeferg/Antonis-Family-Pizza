@@ -4,14 +4,14 @@ const Topping = require('../models/Topping');
 //Get all pizzas 
 exports.getPizzas = async (req, res) => {
     try {
-        const pizzas = await Pizza.find().populate('topping');
+        const pizzas = await Pizza.find().populate('toppings');
         res.json(pizzas);
     } catch (error) {
         res.status(500).json({ message: error.message});
     }
 };
 
-//Add pizzas
+//Add pizza
 exports.addPizza = async (req, res) => {
     const { name, toppings } = req.body;
     try {
@@ -20,9 +20,9 @@ exports.addPizza = async (req, res) => {
 
         const pizza = new Pizza({ name, toppings });
         await pizza.save();
-        resizeTo.status(201).json(pizza);
+        res.status(201).json(pizza);
     } catch (error) {
-        res.status(500).json({ message: error.meesage });
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -31,11 +31,28 @@ exports.deletePizza = async (req, res) => {
     try {
         const deletedPizza = await Pizza.findByIdAndDelete(req.params.id);
         if (!deletedPizza) {
-            return res.status(404).json({ message: 'Pizza not found'})
+            return res.status(404).json({ message: 'Pizza not found'});
         } res.json({ message: 'Pizza deleted'});
     } catch (error) {
         res.status(500).json({ message: error.message});
     }
-    await Pizza.findByIdAndDelete(req.params.id);
-    res.json({ message})
 }
+
+//Update pizza
+exports.updatePizza = async (req, res) => {
+    const { name, toppings } = req.body;
+    try {
+        const updatedPizza = await Pizza.findByIdAndUpdate(
+            req.params.id, 
+            { name, toppings }, 
+            { new: true }
+        );
+        if (!updatedPizza) {
+            return res.status(404).json({ message: 'Pizza not found' });
+        }
+        
+        res.json(updatedPizza);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
