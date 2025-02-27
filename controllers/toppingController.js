@@ -2,8 +2,13 @@ const Topping = require('../models/Topping');
 
 //Get all toppings
 exports.getToppings = async (req, res) => {
-    const toppings = await Topping.find();
-    res.json(toppings);
+    try {
+        const toppings = await Topping.find();
+        res.json(toppings);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+    
 };
 
 //Add topping
