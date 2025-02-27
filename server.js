@@ -19,10 +19,13 @@ mongoose
   .catch((error) => console.error("MongoDB Connection Error:", error));
 
 // Routes
+app.use("/api/toppings", require("./routes/toppingRouts"));
+app.use("/api/pizzas", require("./routes/pizzaRoutes"));
+
 app.get("/", (req, res) => {
-  res.send("Pizza API is running!");
+  res.send("Pizza API is running");
 });
 
 // Start Server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log("Server running on port ${PORT}"));
