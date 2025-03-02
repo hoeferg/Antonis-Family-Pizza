@@ -27,7 +27,7 @@ exports.addPizza = async (req, res) => {
       return res.status(400).json({ message: "Pizza already exists" });
     }
     //Check if toppings exist in database
-    const validToppings = await Topping.find({ _id: { $in: toppings[0] } });
+    const validToppings = await Topping.find({ _id: { $in: toppings } });
 
     if (validToppings.length !== toppings.length) {
       return res
@@ -40,7 +40,7 @@ exports.addPizza = async (req, res) => {
 
     const newPizza = await Pizza.findById(pizza._id).populate("toppings");
 
-    res.status(201).json({ message: "Successfully created pizza", topping });
+    res.status(201).json({ message: "Successfully created pizza", toppings: pizza.toppings });
   } catch (error) {
     console.error("Server Error:", error);
     res.status(500).json({ message: error.message });
@@ -68,6 +68,13 @@ exports.updatePizza = async (req, res) => {
     return res.status(400).json({ message: "Pizza name cannot be empty" });
   }
   try {
+    const validToppings = await Topping.find({ _id: { $in: toppings } });
+
+    if (validToppings.length !== toppings.length) {
+      return res
+        .status(400)
+        .json({ message: "One or more toppings are invalid" });
+    }
     const updatedPizza = await Pizza.findByIdAndUpdate(
       req.params.id,
       { name, toppings },

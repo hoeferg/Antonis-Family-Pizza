@@ -12,11 +12,7 @@ function Pizzas() {
   useEffect(() => {
    fetchPizzas();
    fetchToppings();
-  }, []);
-
-  useEffect(() => {
-    fetchPizzas();
-  }, []);
+  }, [pizzas]);
 
   const fetchPizzas = async () => {
     try {
@@ -65,7 +61,9 @@ function Pizzas() {
       setName("");
       setSelectedToppings([]);
 
-      await fetchPizzas()
+      window.location.reload();
+
+
     } catch (error) {
       console.error("Error adding pizza:", error.message);
     }
