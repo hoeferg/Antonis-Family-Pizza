@@ -26,6 +26,7 @@ function Toppings() {
       const newTopping = await response.json();
       setToppings((prevToppings) => [...prevToppings, newTopping]);
       setName("");
+      window.location.reload();
     } catch (error) {
         console.error("Error adding topping:", error);
     }
