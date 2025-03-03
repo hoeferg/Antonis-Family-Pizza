@@ -12,7 +12,7 @@ function Pizzas() {
   useEffect(() => {
    fetchPizzas();
    fetchToppings();
-  }, [pizzas]);
+  }, []);
 
   const fetchPizzas = async () => {
     try {
@@ -56,8 +56,7 @@ function Pizzas() {
 
       if (!response.ok) throw new Error(responseData.message || "Failed to add pizza");
 
-      const newPizza = await response.json();
-      setPizzas((prevPizzas) => [...prevPizzas, newPizza]);
+      setPizzas((prevPizzas) => [...prevPizzas, responseData]);
       setName("");
       setSelectedToppings([]);
 
