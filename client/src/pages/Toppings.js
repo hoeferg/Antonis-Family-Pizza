@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Loader2, Plus, Trash2 } from "lucide-react"
 
-const API_URL = "http://localhost:5000/api/toppings"
+const API_URL= "/api/toppings";
 
 function Toppings() {
   const [toppings, setToppings] = useState([])

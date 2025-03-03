@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react"
 import { Loader2, Plus, Trash2 } from "lucide-react"
 
-const PIZZA_API = "http://localhost:5000/api/pizzas"
-const TOPPING_API = "http://localhost:5000/api/toppings"
+const PIZZA_API = "/api/pizzas";
+const TOPPING_API = "/api/toppings";
 
 function Pizzas() {
   const [pizzas, setPizzas] = useState([])
